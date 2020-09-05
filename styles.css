@@ -11,7 +11,7 @@
   transition: background-color, height, width, ease-in-out 0.4s;
   border-radius: 10px;
   position: relative;
-  min-height: 35vh;
+  min-height: 350px;
 }
 
 .book:hover {
@@ -52,16 +52,16 @@ form {
   margin-top: -300px;
   margin-left: -250px;
   background-color: white;
-  z-index: 5;
+  z-index: 15;
 }
 
 #form-popup {
   display: none;
   position: absolute;
-  top: 0;
+  top: 100px;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgb(180, 180, 180);
+
   z-index: 4;
 }

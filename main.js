@@ -65,8 +65,9 @@ for(let book of myLib.library) {
   main.appendChild(booksDiv);
 
 }
-//event listeners for form pop-up / hide
 
+
+//event listeners for form pop-up / hide
 newBookBtn = document.querySelector("#new-book-button");
 newBookBtn.addEventListener("click", function() {
   form = document.querySelector("#form-popup")
@@ -83,7 +84,39 @@ hideFormBtn.addEventListener("click", function() {
   document.querySelector("#form-popup").style.display = "none";
 })
 
-form = document.querySelector("#form-popup");
-form.addEventListener("click", function(){
-  form.style.display = "none";
+
+submitButton = document.querySelector("#submit-button");
+submitButton.addEventListener("click", function(){
+
 })
+
+function processForm(e) {
+  if(e.preventDefault) e.preventDefault();
+
+  const formValues = Array.from(this).filter(ele => ele.value !== '').map(ele => ({ name: ele.name, value: ele.value }))
+
+  book = new Book;
+
+  console.log(book)
+
+  for(key of formValues) {
+    book[key.name] = key.value
+  }
+
+  console.log(book)
+
+  myLib.addBook(book)
+
+  document.location.reload(true)
+
+  return false;
+
+}
+
+form = document.querySelector('form');
+
+if (form.attachEvent) {
+  form.attachEvent("submit", processForm);
+} else {
+  form.addEventListener("submit", processForm);
+}
