@@ -14,6 +14,31 @@ function Book(title, author, genre) {
 
 }
 
+function appendBook(book) {
+  //button to delete current book from library 
+  deleteBookBtn = document.createElement("btn");
+  deleteBookBtn.classList.add("delete-book-button")
+
+  bookDiv.appendChild(deleteBookBtn);
+
+  
+  //book's title
+  bookTitle = document.createElement("p");
+  bookTitle.innerHTML = book.title;
+  bookTitle.classList.add("book-title");
+
+  //book's author
+  bookAuthor = document.createElement("p");
+  bookAuthor.innerHTML = book.author;
+  bookAuthor.classList.add("book-author");
+
+  //book's genre
+  bookGenre = document.createElement("p");
+  bookGenre.innerHTML = book.genre;
+  bookGenre.classList.add("book-genre");
+}
+
+
 myLib = new Library;
 
 myLib.addBook(new Book("Man's search for Meaning", "Viktor Frankl", "Psychology"));
@@ -36,27 +61,7 @@ for(let book of myLib.library) {
   bookDiv.classList.add("col-10", "col-md-3", "book");
 
 
-  //button to delete current book from library 
-  deleteBookBtn = document.createElement("btn");
-  deleteBookBtn.classList.add("delete-book-button")
-
-  bookDiv.appendChild(deleteBookBtn);
-
-  
-  //book's title
-  bookTitle = document.createElement("p");
-  bookTitle.innerHTML = book.title;
-  bookTitle.classList.add("book-title");
-
-  //book's author
-  bookAuthor = document.createElement("p");
-  bookAuthor.innerHTML = book.author;
-  bookAuthor.classList.add("book-author");
-
-  //book's genre
-  bookGenre = document.createElement("p");
-  bookGenre.innerHTML = book.genre;
-  bookGenre.classList.add("book-genre");
+  appendBook(book);
 
   bookDiv.appendChild(bookTitle);
   bookDiv.appendChild(bookAuthor);
@@ -93,21 +98,20 @@ submitButton.addEventListener("click", function(){
 function processForm(e) {
   if(e.preventDefault) e.preventDefault();
 
+  //get form values
   const formValues = Array.from(this).filter(ele => ele.value !== '').map(ele => ({ name: ele.name, value: ele.value }))
 
   book = new Book;
-
-  console.log(book)
 
   for(key of formValues) {
     book[key.name] = key.value
   }
 
-  console.log(book)
-
   myLib.addBook(book)
 
-  document.location.reload(true)
+  console.log(myLib)
+
+  appendBook(book)
 
   return false;
 
