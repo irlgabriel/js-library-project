@@ -4,20 +4,64 @@
   margin: 0;
 }
 
-
 .book {
-  background-color: rgba(0,0,0,0.1);
-  margin: 5px;
+  background-color: rgba(139, 143, 105, 0.548);
+  margin: 10px;
+  padding: 20px 0px;
   transition: background-color, height, width, ease-in-out 0.4s;
+  border-radius: 10px;
+  position: relative;
+  min-height: 35vh;
 }
 
 .book:hover {
   background-color: rgba(175, 81, 81, 0.664);
-
 }
 
 .book-title{
   font-weight: bold;
+  font-size: 24px;
   text-align: center;
+  margin-bottom: 0;
+}
 
+.book-author {
+  text-align: right;
+  font-weight: bold;
+}
+
+.book-genre {
+  color: rgba(63, 79, 170, 0.664);
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+  font-weight: bold;
+}
+
+.book-author:before {
+  content: "by ";
+}
+
+form {
+  border-radius: 10px;
+  padding: 10px;
+  width: 500px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -300px;
+  margin-left: -250px;
+  background-color: white;
+  z-index: 5;
+}
+
+#form-popup {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgb(180, 180, 180);
+  z-index: 4;
 }

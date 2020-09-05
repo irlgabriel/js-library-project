@@ -28,10 +28,21 @@ myLib.addBook(new Book("The Ego and the Id", "Sigmund Freud", "Psychology"));
 booksDiv = document.querySelector("#books-container");
 
 for(let book of myLib.library) {
+
+  main = document.querySelector("#main");
+
   //create book div
   bookDiv = document.createElement("div");
   bookDiv.classList.add("col-10", "col-md-3", "book");
 
+
+  //button to delete current book from library 
+  deleteBookBtn = document.createElement("btn");
+  deleteBookBtn.classList.add("delete-book-button")
+
+  bookDiv.appendChild(deleteBookBtn);
+
+  
   //book's title
   bookTitle = document.createElement("p");
   bookTitle.innerHTML = book.title;
@@ -50,8 +61,29 @@ for(let book of myLib.library) {
   bookDiv.appendChild(bookTitle);
   bookDiv.appendChild(bookAuthor);
   bookDiv.appendChild(bookGenre);
-
   booksDiv.appendChild(bookDiv);
-
+  main.appendChild(booksDiv);
 
 }
+//event listeners for form pop-up / hide
+
+newBookBtn = document.querySelector("#new-book-button");
+newBookBtn.addEventListener("click", function() {
+  form = document.querySelector("#form-popup")
+  if(form.style.display == "block"){
+    form.style.display = "none";
+  }
+  else {
+    form.style.display = "block";
+  }
+})
+
+hideFormBtn = document.querySelector("#hide-form");
+hideFormBtn.addEventListener("click", function() {
+  document.querySelector("#form-popup").style.display = "none";
+})
+
+form = document.querySelector("#form-popup");
+form.addEventListener("click", function(){
+  form.style.display = "none";
+})
