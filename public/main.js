@@ -1,3 +1,9 @@
+//firestore db
+const db = firebase.firestore()
+
+
+
+
 function Library() {
   this.library = [];
 }
@@ -19,6 +25,8 @@ const main = document.querySelector("#main");
 const form = document.querySelector('form');
 const hideFormBtn = document.querySelector("#hide-form");
 const newBookBtn = document.querySelector("#new-book-button");
+const formPopUp = document.querySelector("#form-popup")
+
 
 //function to add book in the DOM
 function appendBook(book) {
@@ -71,7 +79,6 @@ function appendBook(book) {
 
 //"Add new book" event listener -> brings up book form creation
 newBookBtn.addEventListener("click", function() {
-  const formPopUp = document.querySelector("#form-popup")
   if(formPopUp.style.display == "block"){
     formPopUp.style.display = "none";
   }
@@ -89,13 +96,17 @@ hideFormBtn.addEventListener("click", function() {
 form.addEventListener("submit", function(e) {
   e.preventDefault(); 
 
-  const book = new Book
+  const book = new Book(form.title.value, form.author.value, form.genre.value)
 
-  const formValues = Array.from(this).filter(ele => ele.value !== '').map(ele => ({ name: ele.name, value: ele.value }))
-  for(key of formValues) {
-    book[key.name] = key.value
-  }
   myLib.addBook(book)
+
+  //clear inputs after submitting
+  form.title.value = ""
+  form.author.value = ""
+  form.genre.value = ""
+
+  formPopUp.style.display = "none"
+
   return false;
 
 })
@@ -104,10 +115,12 @@ form.addEventListener("submit", function(e) {
 //'seeding' db
 myLib = new Library;
 
-myLib.addBook(new Book("Man's search for Meaning", "Viktor Frankl", "Psychology"));
-myLib.addBook(new Book("Thinking, fast and slow", "Daniel Kahneman", "Psychology"));
-myLib.addBook(new Book("The Republic", "Plato", "Philosophy"));
-myLib.addBook(new Book("Sophie's World", "Jostein Gardner", "Philosophy"));
-myLib.addBook(new Book("Sophie's World", "Jostein Gardner", "Philosophy"));
-myLib.addBook(new Book("Recollections: An Autobiography","Viktor Frankl", "Psychology"));
-myLib.addBook(new Book("The Ego and the Id", "Sigmund Freud", "Psychology"));
+//FIRESTORE
+
+
+
+db.collection('Books').get().then((snapshot) => {
+  snapshot.docs.forEach((doc) => {
+    myLib.addBook(new Book(doc.data().title, doc.data().author, doc.data().genre))
+  })
+})
