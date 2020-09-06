@@ -4,6 +4,7 @@ function Library() {
 
 Library.prototype.addBook = function(book) {
   this.library.push(book)
+  appendBook(book)
 }
 
 function Book(title, author, genre) {
@@ -94,7 +95,7 @@ form.addEventListener("submit", function(e) {
   for(key of formValues) {
     book[key.name] = key.value
   }
-  appendBook(book);
+  myLib.addBook(book)
   return false;
 
 })
