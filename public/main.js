@@ -1,6 +1,5 @@
 function Library() {
   this.library = [];
-
 }
 
 Library.prototype.addBook = function(book) {
@@ -11,40 +10,42 @@ function Book(title, author, genre) {
   this.title = title
   this.author = author
   this.genre = genre
-
 }
 
-booksDiv = document.querySelector("#books-container");
-main = document.querySelector("#main");
 
+const booksDiv = document.querySelector("#books-container");
+const main = document.querySelector("#main");
+const form = document.querySelector('form');
+const hideFormBtn = document.querySelector("#hide-form");
+const newBookBtn = document.querySelector("#new-book-button");
 
 //function to add book in the DOM
 function appendBook(book) {
 
   //create book div
-  bookDiv = document.createElement("div");
+  const bookDiv = document.createElement("div");
   bookDiv.classList.add("col-10", "col-md-3", "book");
 
 
   //button to delete current book from library 
-  deleteBookBtn = document.createElement("btn");
-  deleteBookBtn.classList.add("delete-book-button", "btn", "btn-secondary")
-  deleteBookBtn.innerHTML = "Delete Book"
-  bookDiv.appendChild(deleteBookBtn);
+  const deleteButton = document.createElement("btn")
+  deleteButton.classList.add("delete-book-button", "btn", "btn-secondary")
+  deleteButton.innerHTML = "Delete Book"
+  bookDiv.appendChild(deleteButton);
 
   
   //book's title
-  bookTitle = document.createElement("p");
+  const bookTitle = document.createElement("p");
   bookTitle.innerHTML = book.title;
   bookTitle.classList.add("book-title");
 
   //book's author
-  bookAuthor = document.createElement("p");
+  const bookAuthor = document.createElement("p");
   bookAuthor.innerHTML = book.author;
   bookAuthor.classList.add("book-author");
 
   //book's genre
-  bookGenre = document.createElement("p");
+  const bookGenre = document.createElement("p");
   bookGenre.innerHTML = book.genre;
   bookGenre.classList.add("book-genre");
 
@@ -54,7 +55,49 @@ function appendBook(book) {
   booksDiv.appendChild(bookDiv);
   main.appendChild(booksDiv);
 
+  //"Delete book" button to delete current book
+  let deleteBookBtns = document.querySelectorAll(".delete-book-button")
+  const deleteBookBtn = deleteBookBtns[deleteBookBtns.length - 1]
+
+  deleteBookBtn.addEventListener("click", function() {
+    let bookDiv = deleteBookBtn.parentNode  
+    bookDiv.remove()
+  })
+
+  return bookDiv;
 }
+
+
+//"Add new book" event listener -> brings up book form creation
+newBookBtn.addEventListener("click", function() {
+  const formPopUp = document.querySelector("#form-popup")
+  if(formPopUp.style.display == "block"){
+    formPopUp.style.display = "none";
+  }
+  else {
+    formPopUp.style.display = "block";
+  }
+})
+
+//"Cancel" form button event listener -> hides the book form
+hideFormBtn.addEventListener("click", function() {
+  document.querySelector("#form-popup").style.display = "none";
+})
+
+//Create book through form
+form.addEventListener("submit", function(e) {
+  e.preventDefault(); 
+
+  const book = new Book
+
+  const formValues = Array.from(this).filter(ele => ele.value !== '').map(ele => ({ name: ele.name, value: ele.value }))
+  for(key of formValues) {
+    book[key.name] = key.value
+  }
+  appendBook(book);
+  return false;
+
+})
 
 
 //'seeding' db
@@ -67,71 +110,3 @@ myLib.addBook(new Book("Sophie's World", "Jostein Gardner", "Philosophy"));
 myLib.addBook(new Book("Sophie's World", "Jostein Gardner", "Philosophy"));
 myLib.addBook(new Book("Recollections: An Autobiography","Viktor Frankl", "Psychology"));
 myLib.addBook(new Book("The Ego and the Id", "Sigmund Freud", "Psychology"));
-
-
-
-for(let book of myLib.library) {
-  appendBook(book);
-}
-
-
-//"Add new book" event listener -> brings up book form creation
-newBookBtn = document.querySelector("#new-book-button");
-newBookBtn.addEventListener("click", function() {
-  form = document.querySelector("#form-popup")
-  if(form.style.display == "block"){
-    form.style.display = "none";
-  }
-  else {
-    form.style.display = "block";
-  }
-})
-
-//"Cancel" form button event listener -> hides the book form
-hideFormBtn = document.querySelector("#hide-form");
-hideFormBtn.addEventListener("click", function() {
-  document.querySelector("#form-popup").style.display = "none";
-})
-
-//"Delete book" button to delete current book
-deleteBookBtns = document.querySelectorAll(".delete-book-button")
-for(deleteBookBtn of deleteBookBtns) {
-  deleteBookBtn.addEventListener("click", function() {
-    bookDiv = deleteBookBtn.parentNode
-    console.log(bookDiv)
-  })
-}
-
-//"Catch" form and prevent it from being submitted
-function processForm(e) {
-  if(e.preventDefault) e.preventDefault();
-
-  console.log(e)
-
-  //get form values
-  const formValues = Array.from(this).filter(ele => ele.value !== '').map(ele => ({ name: ele.name, value: ele.value }))
-
-  //create book
-  book = new Book;
-
-  //assign form values to the new book
-  for(key of formValues) {
-    book[key.name] = key.value
-  }
-
-  //add book to the library
-  myLib.addBook(book)
-
-  //add book to the DOM element
-  appendBook(book)
-
-  return false;
-}
-
-form = document.querySelector('form');
-
-if (form.attachEvent) {
-  form.attachEvent("submit", processForm);
-} else {
-  form.addEventListener("submit", processForm);
-}
