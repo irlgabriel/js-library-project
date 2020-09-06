@@ -65,3 +65,9 @@ form {
 
   z-index: 4;
 }
+
+.delete-book-button {
+  position: absolute;
+  left: 10px;
+  bottom: 25px;
+}
