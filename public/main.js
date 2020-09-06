@@ -1,22 +1,31 @@
 //firestore db
 const db = firebase.firestore()
 
-
-
-
 function Library() {
   this.library = [];
 }
 
-Library.prototype.addBook = function(book) {
-  this.library.push(book)
-  appendBook(book)
+Library.prototype.addBook = function(doc) {
+  this.library.push(new Book(doc))
+  renderBook(doc)
 }
 
-function Book(title, author, genre) {
-  this.title = title
-  this.author = author
-  this.genre = genre
+function Book(doc) {
+  this.title = this.getTitle
+  this.author = this.getAuthor
+  this.genre = this.getGenre
+}
+
+Book.prototype.getTitle = () => {
+  this.data().title
+}
+
+Book.prototype.getAuthor = () => {
+  this.data().author
+}
+
+Book.prototype.getGenre = () => {
+  this.data().genre
 }
 
 
@@ -29,10 +38,11 @@ const formPopUp = document.querySelector("#form-popup")
 
 
 //function to add book in the DOM
-function appendBook(book) {
+function renderBook(doc) {
 
   //create book div
   const bookDiv = document.createElement("div");
+  bookDiv.setAttribute("data-id", doc.id)
   bookDiv.classList.add("col-10", "col-md-3", "book");
 
 
@@ -45,17 +55,17 @@ function appendBook(book) {
   
   //book's title
   const bookTitle = document.createElement("p");
-  bookTitle.innerHTML = book.title;
+  bookTitle.innerHTML = doc.data().title;
   bookTitle.classList.add("book-title");
 
   //book's author
   const bookAuthor = document.createElement("p");
-  bookAuthor.innerHTML = book.author;
+  bookAuthor.innerHTML = doc.data().author;
   bookAuthor.classList.add("book-author");
 
   //book's genre
   const bookGenre = document.createElement("p");
-  bookGenre.innerHTML = book.genre;
+  bookGenre.innerHTML = doc.data().genre;
   bookGenre.classList.add("book-genre");
 
   bookDiv.appendChild(bookTitle);
@@ -69,7 +79,7 @@ function appendBook(book) {
   const deleteBookBtn = deleteBookBtns[deleteBookBtns.length - 1]
 
   deleteBookBtn.addEventListener("click", function() {
-    let bookDiv = deleteBookBtn.parentNode  
+    let bookDiv = deleteBookBtn.parentNode
     bookDiv.remove()
   })
 
@@ -105,22 +115,26 @@ form.addEventListener("submit", function(e) {
   form.author.value = ""
   form.genre.value = ""
 
+
+  //save changes to firestore
+  db.collection("Books").add({
+    title: book.title,
+    author: book.author,
+    genre: book.genre
+  })
   formPopUp.style.display = "none"
 
   return false;
 
 })
 
-
-//'seeding' db
-myLib = new Library;
-
 //FIRESTORE
 
-
+myLib = new Library;
 
 db.collection('Books').get().then((snapshot) => {
   snapshot.docs.forEach((doc) => {
-    myLib.addBook(new Book(doc.data().title, doc.data().author, doc.data().genre))
+    myLib.addBook(doc)
+
   })
 })
