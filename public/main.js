@@ -105,6 +105,7 @@ newBookBtn.addEventListener("click", () => {
 
 //"Cancel" form button event listener -> hides the book form
 hideFormBtn.addEventListener("click", () => {
+  console.log(form)
   form.style.display = "none";
 })
 
