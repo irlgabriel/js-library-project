@@ -39,7 +39,7 @@
             <input type="text" name="genre" class="form-control" placeholder="Genre of the book.." require>
           </div>
           <div class="buttons w-25 mx-auto">
-            <button id="submit-button" type="submit" class="btn btn-secondary my-2" id="add-book-button">Add Book</button>
+            <button id="submit-button" type="submit" class="btn btn-secondary my-2 add-book-button">Add Book</button>
             <br>
             <button type="button" class="btn btn-info my-2" id="hide-form">Cancel</button>
           </div>
@@ -51,6 +51,13 @@
       </div>
 
     </div>
+
+  <!-- firebase sdk (CDN) -->
+  <script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-analytics.js"></script>
+  <!-- firebase init -->
+  <script src="firebase.js"></script>
+  <!-- main js script -->
   <script src="main.js" async defer></script>
   </body>
 </html>
