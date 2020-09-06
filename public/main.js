@@ -45,7 +45,7 @@ function renderBook(doc) {
   //create book div
   const bookDiv = document.createElement("div");
   bookDiv.setAttribute("data-id", doc.id)
-  bookDiv.classList.add("col-10", "col-md-3", "book");
+  bookDiv.classList.add("col-10", "col-md-5", "col-lg-4", "col-xl-2", "book");
 
 
   //button to delete current book from library 
@@ -93,17 +93,20 @@ function renderBook(doc) {
 
 //"Add new book" event listener -> brings up book form creation
 newBookBtn.addEventListener("click", () => {
-  if(formPopUp.style.display == "block"){
-    formPopUp.style.display = "none";
+  
+  
+  if(formPopUp.style.display == "none"){
+    formPopUp.style.display = "fixed";
   }
   else {
-    formPopUp.style.display = "block";
+    formPopUp.style.display = "none";
   }
 })
 
 //"Cancel" form button event listener -> hides the book form
 hideFormBtn.addEventListener("click", () => {
-  document.querySelector("#form-popup").style.display = "none";
+  formPopUp.style.position = "absolute";
+  formPopUp.style.visibility = "hidden";
 })
 
 //Create book through form
@@ -128,6 +131,8 @@ form.addEventListener("submit", (e) => {
   form.title.value = ""
   form.author.value = ""
   form.genre.value = ""
+
+  location.reload();
 
   return false;
 
