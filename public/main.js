@@ -36,7 +36,6 @@ const main = document.querySelector("#main");
 const form = document.querySelector('form');
 const hideFormBtn = document.querySelector("#hide-form");
 const newBookBtn = document.querySelector("#new-book-button");
-const formPopUp = document.querySelector("#form-popup")
 
 
 //function to add book in the DOM
@@ -106,7 +105,7 @@ newBookBtn.addEventListener("click", () => {
 
 //"Cancel" form button event listener -> hides the book form
 hideFormBtn.addEventListener("click", () => {
-  document.querySelector("#form-popup").style.display = "none";
+  form.style.display = "none";
 })
 
 //Create book through form
@@ -125,7 +124,7 @@ form.addEventListener("submit", (e) => {
   })
 
   //hide form after submiting
-  formPopUp.style.display = "none"
+  form.style.display = "none"
 
   //clear inputs after submitting
   form.title.value = ""
