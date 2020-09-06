@@ -54,11 +54,14 @@ function renderBook(doc) {
   deleteButton.innerHTML = "Delete Book"
 
   deleteButton.addEventListener("click", (e) => {
-    parent = e.target.parentElement
-    const id = parent.getAttribute("data-id")
-    console.log(id);
-    db.collection("Books").doc(id).delete();
-    parent.remove();
+
+    if(confirm("Are you sure you want to delete this book? This action cannot be undone.book-title")) {
+      parent = e.target.parentElement
+      const id = parent.getAttribute("data-id")
+      console.log(id);
+      db.collection("Books").doc(id).delete();
+      parent.remove();
+    }
    
   })
   bookDiv.appendChild(deleteButton);
@@ -93,20 +96,17 @@ function renderBook(doc) {
 
 //"Add new book" event listener -> brings up book form creation
 newBookBtn.addEventListener("click", () => {
-  
-  
-  if(formPopUp.style.display == "none"){
-    formPopUp.style.display = "fixed";
+  if(form.style.display == "block"){
+    form.style.display = "none";
   }
   else {
-    formPopUp.style.display = "none";
+    form.style.display = "block";
   }
 })
 
 //"Cancel" form button event listener -> hides the book form
 hideFormBtn.addEventListener("click", () => {
-  formPopUp.style.position = "absolute";
-  formPopUp.style.visibility = "hidden";
+  document.querySelector("#form-popup").style.display = "none";
 })
 
 //Create book through form
@@ -132,7 +132,7 @@ form.addEventListener("submit", (e) => {
   form.author.value = ""
   form.genre.value = ""
 
-  location.reload();
+
 
   return false;
 
