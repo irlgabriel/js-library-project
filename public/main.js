@@ -95,8 +95,8 @@ function renderBook(doc) {
   //read book
   if (doc.data().read == true) {
     bookDiv.classList.add("read");
-
   }
+  
   else {
     const readBook = document.createElement("btn");
     readBook.classList.add("click-to-read", "btn", "btn-success", "d-none", "w-75", "mx-auto")
@@ -121,10 +121,19 @@ function renderBook(doc) {
 
     readBook.addEventListener("click", (e) => {
       e.target.parentElement.classList.add("read")
+      //persist this change to the database
+      const bookId = e.target.parentElement.getAttribute("data-id");
+      
+      db.collection("Books").doc(bookId).update({read: true})
+      e.target.classList.add("d-none")
+
       e.target.parentElement.removeEventListener("mouseover", showEl)
       e.target.parentElement.removeEventListener("mouseleave", hideEl)
-      
+      e.target.classList.remove("d-block")
       e.target.classList.add("d-none")
+
+      console.log(e.target)
+      
     })
 
 

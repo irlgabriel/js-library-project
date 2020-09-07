@@ -1,4 +1,5 @@
 const auth = firebase.auth()
+
 googleSignInButton = document.querySelector("#google-sign-in");
 signOutButton = document.querySelector("#sign-out");
 
@@ -9,10 +10,10 @@ googleSignInButton.addEventListener("click", () => {
     var token = result.credential.accessToken;
     // The signed-in user info.
     var user = result.user;
-    console.log(user)
 
   }).catch((error) => {
     // Handle Errors here.
+    console.log(error)
     var errorCode = error.code;
     var errorMessage = error.message;
     // The email of the user's account used.
