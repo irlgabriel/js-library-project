@@ -100,3 +100,11 @@ form {
   left: 10px;
 }
 
+
+#sign-in-buttons {
+  background-color: #f9f9f9;
+  width: 100%;
+  display: none;
+  margin: 10px auto 0 auto;
+
+}

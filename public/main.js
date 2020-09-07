@@ -1,25 +1,29 @@
 //firestore db
 const db = firebase.firestore()
 
-//constructor for building Book objects using
-//firebase document reference
+function Library() {
+  this.library = [];
+}
 
-let books = []
+Library.prototype.addBook = function(book) {
+  this.library.push(book)
+}
 
-function Book(title, author, genre, read) {
+function Book(title, author, genre, read, id) {
   this.title = title
   this.author = author
   this.genre = genre
   this.read = read
+  this.id = id
 }
+
+const myLib = new Library
 
 // function to toggle read status
 Book.prototype.readBook = function(){
   console.log(this)
   this.read = (this.read == false) ? true : false;
 }
-
-
 
 const booksDiv = document.querySelector("#books-container");
 const main = document.querySelector("#main");
@@ -35,7 +39,6 @@ function renderBook(doc) {
   const bookDiv = document.createElement("div");
   bookDiv.setAttribute("data-id", doc.id)
   bookDiv.classList.add("col-10", "col-md-5", "col-lg-3", "book");
-
 
   //button to delete current book from library 
   const deleteButton = document.createElement("btn")
@@ -89,21 +92,39 @@ function renderBook(doc) {
 
   //Toggle between read/unread status in firebase db
   bookDiv.addEventListener("click", (e) => {
-    //console.log(e.target)
     const bookId = e.target.getAttribute("data-id");
-    db.collection("Books").doc(bookId).update({
-        read: true,
-    })
+    const book = myLib.library.find(el => el.id == bookId)
 
+    console.log(book)
+
+    if(book.read == true) {
+      book.read = false;
+      db.collection("Books").doc(bookId).update({     
+        read: false
+      })
+      e.target.classList.remove("read")
+      e.target.classList.add("unread")
+    } else {
+      book.read = true;
+      db.collection("Books").doc(bookId).update({
+        read: true
+      })
+      e.target.classList.remove("unread")
+      e.target.classList.add("read")
+    }
+
+
+    
+    console.log(book)
     db.collection("Books").doc(bookId).get().then((docRef) => {
       console.log(docRef.data())
+      console.log(docRef.id)
     })
 
 })
 
   return bookDiv;
 }
-
 
 //"Add new book" event listener -> brings up book form creation
 newBookBtn.addEventListener("click", () => {
@@ -120,13 +141,9 @@ hideFormBtn.addEventListener("click", () => {
   form.style.display = "none";
 })
 
-
-
 //Create book through form
 form.addEventListener("submit", (e) => {
   e.preventDefault(); 
-
-  
   const book = new Book(form.title.value, form.author.value, form.genre.value, form.read.checked)
 
   //save changes to firestore
@@ -139,8 +156,10 @@ form.addEventListener("submit", (e) => {
   .then((docRef) => {
     db.collection('Books').doc(docRef.id).get()
     .then((docRef) => {
-      renderBook(docRef)
-      console.log(docRef.data())
+      //renderBook(docRef)
+      //console.log(docRef.data())
+      //const book = myLib.library.find(el => el.id == docRef.id)
+      //console.log(book)
     })
   })
   
@@ -151,8 +170,10 @@ form.addEventListener("submit", (e) => {
   form.title.value = ""
   form.author.value = ""
   form.genre.value = ""
+  form.read.checked = false;
 
-  
+  location.reload()
+
   return false;
 
 })
@@ -161,8 +182,8 @@ form.addEventListener("submit", (e) => {
 //Add books from firestore databaste
 db.collection('Books').get().then((snapshot) => {
   snapshot.docs.forEach((doc) => {
-    const book = new Book(doc.data().title, doc.data().author, doc.data().genre, doc.data().read)
-    books.push(book)
+    const book = new Book(doc.data().title, doc.data().author, doc.data().genre, doc.data().read, doc.id)
+    myLib.addBook(book)
     renderBook(doc)
   })
 })

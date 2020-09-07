@@ -15,12 +15,11 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
 
-
-    
+    <!-- firebase service -->
     <script src="/__/firebase/7.19.1/firebase-app.js"></script>
-    <script src="/__/firebase/7.19.1/firebase-auth.js"></script>
     <script src="/__/firebase/7.19.1/firebase-firestore.js"></script>
     <script src="/__/firebase/init.js"></script>
+
 
   </head>
   <body>
@@ -31,8 +30,7 @@
         </script>
         <h1 class="font-weight-bold mr-2">Library</h1>
         <button class="btn btn-secondary ml-2" id="new-book-button">New Book</button>
-        <button type="button" id="google-sign-in" class="w-100 btn btn-success">Sign In With Google</button>
-        <button type="button" id="sign-out" class="mt-2 w-100 btn btn-danger">Sign Out</button>
+
       </div>
 
       <form>
@@ -69,12 +67,9 @@
       </div>
 
     </div>
-
-    
     
     <script src="main.js"></script>
-    <!-- authentication script -->
-    <script src="auth.js"></script>
+
   </body>
 </html>
 
