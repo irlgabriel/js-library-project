@@ -10,16 +10,16 @@ function Book(title, author, genre, read) {
   this.title = title
   this.author = author
   this.genre = genre
-  this.read = (read == "on") ? true : false
+  this.read = read
 }
-
-
 
 // function to toggle read status
-Book.prototype.readBook = () => {
-  console.log(this.read)
-  this.read = !this.read
+Book.prototype.readBook = function(){
+  console.log(this)
+  this.read = (this.read == false) ? true : false;
 }
+
+
 
 const booksDiv = document.querySelector("#books-container");
 const main = document.querySelector("#main");
@@ -55,6 +55,8 @@ function renderBook(doc) {
   bookDiv.appendChild(deleteButton);
 
   
+  //BOOK'S INFO
+
   //book's title
   const bookTitle = document.createElement("p");
   bookTitle.innerHTML = doc.data().title;
@@ -78,11 +80,26 @@ function renderBook(doc) {
   if (doc.data().read == true) {
     bookDiv.classList.add("read");
   }
+  else {
+    bookDiv.classList.add("unread")
+  }
 
   booksDiv.appendChild(bookDiv);
   main.appendChild(booksDiv);
 
-  
+  //Toggle between read/unread status in firebase db
+  bookDiv.addEventListener("click", (e) => {
+    //console.log(e.target)
+    const bookId = e.target.getAttribute("data-id");
+    db.collection("Books").doc(bookId).update({
+        read: true,
+    })
+
+    db.collection("Books").doc(bookId).get().then((docRef) => {
+      console.log(docRef.data())
+    })
+
+})
 
   return bookDiv;
 }
@@ -103,22 +120,21 @@ hideFormBtn.addEventListener("click", () => {
   form.style.display = "none";
 })
 
+
+
 //Create book through form
 form.addEventListener("submit", (e) => {
   e.preventDefault(); 
 
-  const formValues = Array.from(form)
-  .filter(ele => ele.value !== '')
-  .map(ele => ({ name: ele.name, value: ele.value }));
-
-  const book = new Book(form.title.value, form.author.value, form.genre.value, form.read.value)
+  
+  const book = new Book(form.title.value, form.author.value, form.genre.value, form.read.checked)
 
   //save changes to firestore
   db.collection("Books").add({
     title: book.title,
     author: book.author,
     genre: book.genre,
-    read: book.read,
+    read: book.read
   })
   .then((docRef) => {
     db.collection('Books').doc(docRef.id).get()
@@ -148,7 +164,5 @@ db.collection('Books').get().then((snapshot) => {
     const book = new Book(doc.data().title, doc.data().author, doc.data().genre, doc.data().read)
     books.push(book)
     renderBook(doc)
-
-
   })
 })

@@ -5,7 +5,7 @@
 }
 
 .book {
-  background-color: rgba(139, 143, 105, 0.548);
+  background-color: rgba(255, 123, 0, 0.315);
   margin: 10px;
   padding: 20px 0px;
   transition: all ease-in-out 0.4s;
@@ -14,8 +14,12 @@
   min-height: 350px;
 }
 
-.book:hover {
+.read:hover {
   background-color: rgba(175, 81, 81, 0.664);
+}
+
+.unread:hover {
+  background-color: rgba(92, 180, 70, 0.664);
 }
 
 .book-title{
@@ -64,9 +68,31 @@ form {
   bottom: 25px;
 }
 
-.read {
-  background-color: rgba(4, 180, 4, 0.486);
+.read:before {
+  content: "Read";
+  position: absolute;
+  color: green;
+  font-weight: bold;
+  font-size: 22px;
+  top: 45%;
+  left: 40%;
+  transform: rotate(45deg);
+
 }
+
+
+.unread:before {
+  content: "Unread";
+  position: absolute;
+  color: rgb(255, 72, 0);
+  font-weight: bold;
+  font-size: 22px;
+  top: 45%;
+  left: 40%;
+  transform: rotate(-45deg);
+}
+
+
 
 .click-to-read {
   position: absolute;
