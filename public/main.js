@@ -95,7 +95,7 @@ function renderBook(doc) {
     const bookId = e.target.getAttribute("data-id");
     const book = myLib.library.find(el => el.id == bookId)
 
-    console.log(book)
+    //console.log(book)
 
     if(book.read == true) {
       book.read = false;
@@ -114,12 +114,13 @@ function renderBook(doc) {
     }
 
 
-    
+    /* debug
     console.log(book)
     db.collection("Books").doc(bookId).get().then((docRef) => {
       console.log(docRef.data())
       console.log(docRef.id)
     })
+    */
 
 })
 
