@@ -4,39 +4,22 @@ const db = firebase.firestore()
 //constructor for building Book objects using
 //firebase document reference
 
-function Book(doc) {
-  this.title = this.getTitle
-  this.author = this.getAuthor
-  this.genre = this.getGenre
-  this.read = this.isRead
-}
+let books = []
 
-//"classic" constructor
 function Book(title, author, genre, read) {
   this.title = title
   this.author = author
   this.genre = genre
-  this.read = read
+  this.read = (read == "on") ? true : false
 }
 
-//"helper functions to get attributes from firebase"
 
-Book.prototype.isRead = () => {
-  this.data().read
+
+// function to toggle read status
+Book.prototype.readBook = () => {
+  console.log(this.read)
+  this.read = !this.read
 }
-
-Book.prototype.getTitle = () => {
-  this.data().title
-}
-
-Book.prototype.getAuthor = () => {
-  this.data().author
-}
-
-Book.prototype.getGenre = () => {
-  this.data().genre
-}
-
 
 const booksDiv = document.querySelector("#books-container");
 const main = document.querySelector("#main");
@@ -64,7 +47,6 @@ function renderBook(doc) {
     if(confirm("Are you sure you want to delete this book? This action cannot be undone")) {
       parent = e.target.parentElement
       const id = parent.getAttribute("data-id")
-      console.log(id);
       db.collection("Books").doc(id).delete();
       parent.remove();
     }
@@ -96,48 +78,6 @@ function renderBook(doc) {
   if (doc.data().read == true) {
     bookDiv.classList.add("read");
   }
-  
-  else {
-    const readBook = document.createElement("btn");
-    readBook.classList.add("click-to-read", "btn", "btn-success", "d-none", "w-75", "mx-auto")
-    readBook.innerHTML = "Click to Read"
-    bookDiv.appendChild(readBook)
-
-    bookDiv.addEventListener("mouseover", showEl)
-
-    bookDiv.addEventListener("mouseleave", hideEl)
-
-    function hideEl(e) {
-      const show = e.target.querySelector(".click-to-read")
-      show.classList.remove("d-block")
-      show.classList.add("d-none")
-    }
-
-    function showEl(e) {
-      const show = e.target.querySelector('.click-to-read')
-      show.classList.remove("d-none")
-      show.classList.add("d-block")
-    }
-
-    readBook.addEventListener("click", (e) => {
-      e.target.parentElement.classList.add("read")
-      //persist this change to the database
-      const bookId = e.target.parentElement.getAttribute("data-id");
-      
-      db.collection("Books").doc(bookId).update({read: true})
-      e.target.classList.add("d-none")
-
-      e.target.parentElement.removeEventListener("mouseover", showEl)
-      e.target.parentElement.removeEventListener("mouseleave", hideEl)
-      e.target.classList.remove("d-block")
-      e.target.classList.add("d-none")
-
-      console.log(e.target)
-      
-    })
-
-
-  }
 
   booksDiv.appendChild(bookDiv);
   main.appendChild(booksDiv);
@@ -160,7 +100,6 @@ newBookBtn.addEventListener("click", () => {
 
 //"Cancel" form button event listener -> hides the book form
 hideFormBtn.addEventListener("click", () => {
-  console.log(form)
   form.style.display = "none";
 })
 
@@ -179,8 +118,16 @@ form.addEventListener("submit", (e) => {
     title: book.title,
     author: book.author,
     genre: book.genre,
+    read: book.read,
   })
-
+  .then((docRef) => {
+    db.collection('Books').doc(docRef.id).get()
+    .then((docRef) => {
+      renderBook(docRef)
+      console.log(docRef.data())
+    })
+  })
+  
   //hide form after submiting
   form.style.display = "none"
 
@@ -189,18 +136,17 @@ form.addEventListener("submit", (e) => {
   form.author.value = ""
   form.genre.value = ""
 
-
-
+  
   return false;
 
 })
 
-//FIRESTORE
 
-
+//Add books from firestore databaste
 db.collection('Books').get().then((snapshot) => {
   snapshot.docs.forEach((doc) => {
-    new Book(doc)
+    const book = new Book(doc.data().title, doc.data().author, doc.data().genre, doc.data().read)
+    books.push(book)
     renderBook(doc)
 
 
