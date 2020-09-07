@@ -8,16 +8,23 @@ function Book(doc) {
   this.title = this.getTitle
   this.author = this.getAuthor
   this.genre = this.getGenre
+  this.read = this.isRead
 }
 
 //"classic" constructor
-function Book(title, author, genre) {
+function Book(title, author, genre, read) {
   this.title = title
   this.author = author
   this.genre = genre
+  this.read = read
 }
 
 //"helper functions to get attributes from firebase"
+
+Book.prototype.isRead = () => {
+  this.data().read
+}
+
 Book.prototype.getTitle = () => {
   this.data().title
 }
@@ -44,7 +51,7 @@ function renderBook(doc) {
   //create book div
   const bookDiv = document.createElement("div");
   bookDiv.setAttribute("data-id", doc.id)
-  bookDiv.classList.add("col-10", "col-md-5", "col-lg-4", "col-xl-2", "book");
+  bookDiv.classList.add("col-10", "col-md-5", "col-lg-3", "book");
 
 
   //button to delete current book from library 
@@ -54,7 +61,7 @@ function renderBook(doc) {
 
   deleteButton.addEventListener("click", (e) => {
 
-    if(confirm("Are you sure you want to delete this book? This action cannot be undone.book-title")) {
+    if(confirm("Are you sure you want to delete this book? This action cannot be undone")) {
       parent = e.target.parentElement
       const id = parent.getAttribute("data-id")
       console.log(id);
@@ -83,6 +90,45 @@ function renderBook(doc) {
   bookGenre.innerHTML = doc.data().genre;
   bookGenre.classList.add("book-genre");
   bookDiv.appendChild(bookGenre);
+
+
+  //read book
+  if (doc.data().read == true) {
+    bookDiv.classList.add("read");
+
+  }
+  else {
+    const readBook = document.createElement("btn");
+    readBook.classList.add("click-to-read", "btn", "btn-success", "d-none", "w-75", "mx-auto")
+    readBook.innerHTML = "Click to Read"
+    bookDiv.appendChild(readBook)
+
+    bookDiv.addEventListener("mouseover", showEl)
+
+    bookDiv.addEventListener("mouseleave", hideEl)
+
+    function hideEl(e) {
+      const show = e.target.querySelector(".click-to-read")
+      show.classList.remove("d-block")
+      show.classList.add("d-none")
+    }
+
+    function showEl(e) {
+      const show = e.target.querySelector('.click-to-read')
+      show.classList.remove("d-none")
+      show.classList.add("d-block")
+    }
+
+    readBook.addEventListener("click", (e) => {
+      e.target.parentElement.classList.add("read")
+      e.target.parentElement.removeEventListener("mouseover", showEl)
+      e.target.parentElement.removeEventListener("mouseleave", hideEl)
+      
+      e.target.classList.add("d-none")
+    })
+
+
+  }
 
   booksDiv.appendChild(bookDiv);
   main.appendChild(booksDiv);
@@ -113,15 +159,17 @@ hideFormBtn.addEventListener("click", () => {
 form.addEventListener("submit", (e) => {
   e.preventDefault(); 
 
-  const book = new Book(form.title.value, form.author.value, form.genre.value)
+  const formValues = Array.from(form)
+  .filter(ele => ele.value !== '')
+  .map(ele => ({ name: ele.name, value: ele.value }));
 
-  console.log(book)
+  const book = new Book(form.title.value, form.author.value, form.genre.value, form.read.value)
 
   //save changes to firestore
   db.collection("Books").add({
     title: book.title,
     author: book.author,
-    genre: book.genre
+    genre: book.genre,
   })
 
   //hide form after submiting

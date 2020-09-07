@@ -57,21 +57,20 @@ form {
   z-index: 15;
 }
 
-/*
-#form-popup {
-  position: fixed;
-  display: none;
-  background-color: #f9f9f9;
-  top: 100px;
-  left: 200px;
-  right: 200px;
-  bottom: 0;
-  z-index: 4;
-}
-*/
 
 .delete-book-button {
   position: absolute;
   left: 10px;
   bottom: 25px;
 }
+
+.read {
+  background-color: rgba(4, 180, 4, 0.486);
+}
+
+.click-to-read {
+  position: absolute;
+  top: 40%;
+  left: 10px;
+}
+

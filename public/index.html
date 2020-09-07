@@ -23,10 +23,13 @@
   <body>
     <div class="container-fluid p-relative d-inline-block" id="main">
       <div class="my-3 mx-auto align-items-center d-flex w-25 flex-wrap">
+        <script>
+
+        </script>
         <h1 class="font-weight-bold mr-2">Library</h1>
         <button class="btn btn-secondary ml-2" id="new-book-button">New Book</button>
-        <button type="button" id="google-sign-in" class="d-none w-100 btn btn-success">Sign In With Google</button>
-        <button type="button" id="sign-out" class="d-none w-100 btn btn-danger">Sign Out</button>
+        <button type="button" id="google-sign-in" class="w-100 btn btn-success">Sign In With Google</button>
+        <button type="button" id="sign-out" class="mt-2 w-100 btn btn-danger">Sign Out</button>
       </div>
 
       <form>
@@ -45,6 +48,12 @@
           <label for="genre">Genre</label>
           <input type="text" name="genre" class="form-control" placeholder="Genre of the book.." require>
         </div>
+
+        <div class="form-group ">
+          <input type="checkbox" name="read" id="read-input" class="d-inline-block">
+          <label id="read-label" for="read">I read it!</label>
+        </div>
+
         <div class="buttons w-25 mx-auto">
           <button id="submit-button" type="submit" class="btn btn-secondary my-2 add-book-button">Add Book</button>
           <br>
