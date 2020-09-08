@@ -54,12 +54,11 @@
 form {
   border-radius: 10px;
   display: none;
-  padding: 10px;
+  padding: 50px 10px;
   width: 500px;
   position: fixed;
-  top: 50%;
+  top: 10%;
   left: 50%;
-  margin-top: -300px;
   margin-left: -250px;
   background-color: white;
   z-index: 15;

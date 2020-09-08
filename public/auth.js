@@ -1,12 +1,18 @@
 const auth = firebase.auth()
 
 // User objects!
+function Users() {
+  this.users = []
+}
 
 function User(email, pass, uuid) {
   this.email = email
   this.password = pass
   this.uuid = uuid
 }
+
+myUsers = new Users
+
 
 const signUp = document.querySelector("#sign-up")
 const signIn = document.querySelector("#sign-in")
@@ -50,7 +56,7 @@ signUpForm.addEventListener("submit", (e) => {
   auth.createUserWithEmailAndPassword(email, password).then((cred) => {
     console.log(cred)
     const newUser = new User(email, password, cred.uuid)
-
+    myUsers.users.push(newUser)
     location.reload()
   })
 })
@@ -63,6 +69,9 @@ signInForm.addEventListener("submit", (e) => {
   
   auth.signInWithEmailAndPassword(email, password).then(() => {
     location.reload()
+  })
+  .catch((error) => {
+    alert(error.message)
   })
 })
 

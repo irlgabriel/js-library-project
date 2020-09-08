@@ -211,4 +211,3 @@ db.collection('Books').get().then((snapshot) => {
     renderBook(doc)
   })
 })
-
