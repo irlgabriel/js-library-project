@@ -7,6 +7,22 @@ const signUpForm = document.querySelector("#sign-up-form")
 const signInForm = document.querySelector("#sign-in-form")
 const userInfo = document.querySelector("#user-info")
 const userEmail = document.querySelector("#user-email")
+const googleSignIn = document.querySelector("#login-google")
+
+googleSignIn.addEventListener("click", () => {
+  // Using a popup.
+  var provider = new firebase.auth.GoogleAuthProvider();
+  provider.addScope('profile');
+  provider.addScope('email');
+  firebase.auth().signInWithPopup(provider).then(function(result) {
+  // This gives you a Google Access Token.
+  var token = result.credential.accessToken;
+  // The signed-in user info.
+  var user = result.user;
+  location.reload()
+  });
+  
+})
 
 signOut.addEventListener("click", () => {
   auth.signOut().then(() => {
@@ -72,7 +88,8 @@ firebase.auth().onAuthStateChanged(function(user) {
     signOut.style.display = "inline-block"
     signUp.style.display = "none"
     signIn.style.display = "none"
-    userInfo.style.visibility = "visible"
+    googleSignIn.style.display = "none"
+    userEmail.style.display = "block"
 
     const str = document.createElement("strong")
     str.innerHTML = user.email
@@ -102,7 +119,7 @@ firebase.auth().onAuthStateChanged(function(user) {
     signUp.style.display = "inline-block"
     signIn.style.display = "inline-block"
     signOut.style.display = "none"
-    userInfo.style.visibility = "hidden"
+    userEmail.style.display = "none"
     
     db.collection(collectionName).get().then((snapshot) => {
       snapshot.docs.forEach((doc) => {
