@@ -25,11 +25,18 @@ Book.prototype.readBook = function(){
   this.read = (this.read == false) ? true : false;
 }
 
+// function to check if user is logged in!
+function userLoggedIn() {
+  return auth.currentUser
+}
+
 const booksDiv = document.querySelector("#books-container");
 const main = document.querySelector("#main");
 const form = document.querySelector('form');
 const hideFormBtn = document.querySelector("#hide-form");
 const newBookBtn = document.querySelector("#new-book-button");
+const noticeDiv = document.querySelector("#notice-div")
+const notice = document.querySelector("#notice")
 
 
 //function to add book in the DOM
@@ -38,20 +45,25 @@ function renderBook(doc) {
   //create book div
   const bookDiv = document.createElement("div");
   bookDiv.setAttribute("data-id", doc.id)
-  bookDiv.classList.add("col-10", "col-md-5", "col-lg-3", "book");
+  bookDiv.classList.add("col-12", "col-sm-6", "col-md-4", "col-lg-3", "col-xl-2", "book");
 
   //button to delete current book from library 
   const deleteButton = document.createElement("btn")
-  deleteButton.classList.add("delete-book-button", "btn", "btn-secondary")
+  deleteButton.classList.add("delete-book-button", "btn", "btn-outline-dark")
   deleteButton.innerHTML = "Delete Book"
 
   deleteButton.addEventListener("click", (e) => {
-
+    if (!userLoggedIn()) {
+      e.stopPropagation() //dont trigger bookDiv's event as well
+      alert("You need to be logged in for this action!")
+      return false
+    }
     if(confirm("Are you sure you want to delete this book? This action cannot be undone")) {
       parent = e.target.parentElement
       const id = parent.getAttribute("data-id")
       db.collection("Books").doc(id).delete();
       parent.remove();
+      e.stopPropagation()
     }
    
   })
@@ -92,6 +104,10 @@ function renderBook(doc) {
 
   //Toggle between read/unread status in firebase db
   bookDiv.addEventListener("click", (e) => {
+    if (!userLoggedIn()) {
+      alert("You need to be logged in for this action!")
+      return false
+    }
     const bookId = e.target.getAttribute("data-id");
     const book = myLib.library.find(el => el.id == bookId)
 
@@ -129,6 +145,10 @@ function renderBook(doc) {
 
 //"Add new book" event listener -> brings up book form creation
 newBookBtn.addEventListener("click", () => {
+  if (!userLoggedIn()) {
+    alert("You need to be logged in for this action!")
+    return false
+  }
   if(form.style.display == "block"){
     form.style.display = "none";
   }
@@ -145,6 +165,7 @@ hideFormBtn.addEventListener("click", () => {
 //Create book through form
 form.addEventListener("submit", (e) => {
   e.preventDefault(); 
+  
   const book = new Book(form.title.value, form.author.value, form.genre.value, form.read.checked)
 
   //hide form after submiting
@@ -182,7 +203,7 @@ form.addEventListener("submit", (e) => {
 })
 
 
-//Add books from firestore databaste
+//retrieve books from firestore databaste
 db.collection('Books').get().then((snapshot) => {
   snapshot.docs.forEach((doc) => {
     const book = new Book(doc.data().title, doc.data().author, doc.data().genre, doc.data().read, doc.id)

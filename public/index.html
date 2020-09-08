@@ -24,19 +24,26 @@
 
   </head>
   <body>
-    <nav>
-      <button class="btn btn-outline-secondary" type="button" id="sign-up">Sign Up</button>
-      <button class="btn btn-outline-secondary" type="button" id="sign-in">Sign In</button>
-      <button class="btn btn-outline-secondary" type="button" id="sign-out">Sign Out</button>
+    <div id="notice-div" style="display: none;">
+      <p id="notice"></p>
+    </div>
+
+    <nav class="d-flex justify-content-between align-items-center">
+      <div>
+        <button class="btn btn-secondary btn-outline-info text-light px-4" type="button" id="sign-up">Sign Up</button>
+        <button class="btn btn-secondary btn-outline-success text-light px-4" type="button" id="sign-in">Sign In</button>
+        <button class="btn btn-secondary btn-outline-danger text-light px-4" type="button" id="sign-out">Sign Out</button>
+      </div>
+      <div id="user-info" style="visibility: hidden;">
+        <p id="user-email" class="m-0">Logged in as: </p>
+      </div>
     </nav>
     <div class="container-fluid p-relative d-inline-block" id="main">
-      <div class="my-3 mx-auto align-items-center d-flex w-25 flex-wrap">
-        <script>
-
-        </script>
-        <h1 class="font-weight-bold mr-2">Library</h1>
-        <button class="btn btn-secondary ml-2" id="new-book-button">New Book</button>
-
+      <div class="my-3 mx-auto align-items-center justify-content-around d-flex">
+        <div class="d-flex">
+          <h1 class="font-weight-bold mr-2">Library</h1>
+          <button class="btn btn-secondary ml-2 px-4" id="new-book-button">New Book</button>
+        </div>
       </div>
 
       <form>
@@ -90,9 +97,9 @@
       </div>
 
     </div>
-    
+    <script src="auth.js"></script>    
     <script src="main.js"></script>
-    <script src="auth.js"></script>
+
   </body>
 </html>
 

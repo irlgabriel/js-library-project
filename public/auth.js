@@ -8,12 +8,12 @@ function User(email, pass, uuid) {
   this.uuid = uuid
 }
 
-
-
 const signUp = document.querySelector("#sign-up")
 const signIn = document.querySelector("#sign-in")
 const signOut = document.querySelector("#sign-out")
 const signUpForm = document.querySelector("#sign-up-form")
+const userInfo = document.querySelector("#user-info")
+const userEmail = document.querySelector("#user-email")
 
 signOut.addEventListener("click", () => {
   auth.signOut().then(() => {
@@ -57,11 +57,19 @@ firebase.auth().onAuthStateChanged(function(user) {
     signOut.style.display = "inline-block"
     signUp.style.display = "none"
     signIn.style.display = "none"
+    userInfo.style.visibility = "visible"
+
+    const str = document.createElement("strong")
+    str.innerHTML = user.email
+    userEmail.appendChild(str)
+
+    console.log("User logged in!")
 
   } else {
     signUp.style.display = "inline-block"
     signIn.style.display = "inline-block"
     signOut.style.display = "none"
+    userInfo.style.visibility = "hidden"
     console.log("User signed out!")
   }
 });
