@@ -4,6 +4,10 @@
   margin: 0;
 }
 
+#main {
+  margin-top: 58px;
+}
+
 .book {
   background-color: rgba(255, 123, 0, 0.315);
   margin: 10px 5px;
@@ -109,18 +113,27 @@ form {
 
 }
 
+
 nav {
+  position: fixed;
+  width: 100%;
+  z-index: 5;
+  top: 0;
   padding: 8px 20px;
   background-color: #f9f9f9;
   align-items: center;
   border-bottom: 1px solid rgb(218, 218, 218);
 }
 
+
 #sign-in, #sign-up, #sign-out {
   display: none;
 }
 
 #sign-up-form {
-  display: none;
-  padding: 40px 10px;
+  padding: 60px 10px;
+}
+
+#sign-in-form{
+  padding: 60px 10px;
 }

@@ -12,6 +12,7 @@ const signUp = document.querySelector("#sign-up")
 const signIn = document.querySelector("#sign-in")
 const signOut = document.querySelector("#sign-out")
 const signUpForm = document.querySelector("#sign-up-form")
+const signInForm = document.querySelector("#sign-in-form")
 const userInfo = document.querySelector("#user-info")
 const userEmail = document.querySelector("#user-email")
 
@@ -22,13 +23,15 @@ signOut.addEventListener("click", () => {
 })
 
 signIn.addEventListener("click", () => {
-  auth.signInWithEmailAndPassword("mysumadyy@gmail.com", "4737e2c7").then(()=> {
-    location.reload()
-  })
+  if(signInForm.style.display == "none") {
+    signInForm.style.display = "block"
+  } else {
+    signInForm.style.display = "none"
+  }
 })
 
+
 signUp.addEventListener("click",(e) => {
-  console.log(signUpForm.style.display)
   if(signUpForm.style.display == "none") {
     signUpForm.style.display = "block"
   } else {
@@ -42,11 +45,23 @@ signUpForm.addEventListener("submit", (e) => {
   const email = signUpForm.email.value
   const password = signUpForm.password.value
   
+  
 
   auth.createUserWithEmailAndPassword(email, password).then((cred) => {
     console.log(cred)
     const newUser = new User(email, password, cred.uuid)
 
+    location.reload()
+  })
+})
+
+signInForm.addEventListener("submit", (e) => {
+  e.preventDefault()
+
+  const email = signInForm.email.value
+  const password = signInForm.password.value
+  
+  auth.signInWithEmailAndPassword(email, password).then(() => {
     location.reload()
   })
 })
