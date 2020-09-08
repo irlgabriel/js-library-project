@@ -1,31 +1,9 @@
 //firestore db
 const db = firebase.firestore()
 
-function Library() {
-  this.library = [];
-}
-
-Library.prototype.addBook = function(book) {
-  this.library.push(book)
-}
-
-function Book(title, author, genre, read, id) {
-  this.title = title
-  this.author = author
-  this.genre = genre
-  this.read = read
-  this.id = id
-}
-
 const myLib = new Library
-
-// function to toggle read status
-Book.prototype.readBook = function(){
-  console.log(this)
-  this.read = (this.read == false) ? true : false;
-}
-
 // function to check if user is logged in!
+
 function userLoggedIn() {
   return auth.currentUser
 }
@@ -61,7 +39,7 @@ function renderBook(doc) {
     if(confirm("Are you sure you want to delete this book? This action cannot be undone")) {
       parent = e.target.parentElement
       const id = parent.getAttribute("data-id")
-      db.collection("Books").doc(id).delete();
+      db.collection(collectionName).doc(id).delete();
       parent.remove();
       e.stopPropagation()
     }
@@ -115,14 +93,14 @@ function renderBook(doc) {
 
     if(book.read == true) {
       book.read = false;
-      db.collection("Books").doc(bookId).update({     
+      db.collection(collectionName).doc(bookId).update({     
         read: false
       })
       e.target.classList.remove("read")
       e.target.classList.add("unread")
     } else {
       book.read = true;
-      db.collection("Books").doc(bookId).update({
+      db.collection(collectionName).doc(bookId).update({
         read: true
       })
       e.target.classList.remove("unread")
@@ -178,14 +156,14 @@ form.addEventListener("submit", (e) => {
   form.read.checked = false;
 
   //save changes to firestore
-  db.collection("Books").add({
+  db.collection(collectionName).add({
     title: book.title,
     author: book.author,
     genre: book.genre,
     read: book.read
   })
   .then((docRef) => {
-    db.collection('Books').doc(docRef.id).get()
+    db.collection(collectionName).doc(docRef.id).get()
     .then((docRef) => {
       //renderBook(docRef)
       //console.log(docRef.data())
@@ -195,19 +173,7 @@ form.addEventListener("submit", (e) => {
     })
   })
   
- 
-
-
   return false;
 
 })
 
-
-//retrieve books from firestore databaste
-db.collection('Books').get().then((snapshot) => {
-  snapshot.docs.forEach((doc) => {
-    const book = new Book(doc.data().title, doc.data().author, doc.data().genre, doc.data().read, doc.id)
-    myLib.addBook(book)
-    renderBook(doc)
-  })
-})

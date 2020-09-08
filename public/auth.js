@@ -1,19 +1,5 @@
 const auth = firebase.auth()
 
-// User objects!
-function Users() {
-  this.users = []
-}
-
-function User(email, pass, uuid) {
-  this.email = email
-  this.password = pass
-  this.uuid = uuid
-}
-
-myUsers = new Users
-
-
 const signUp = document.querySelector("#sign-up")
 const signIn = document.querySelector("#sign-in")
 const signOut = document.querySelector("#sign-out")
@@ -56,8 +42,10 @@ signUpForm.addEventListener("submit", (e) => {
   auth.createUserWithEmailAndPassword(email, password).then((cred) => {
     console.log(cred)
     const newUser = new User(email, password, cred.uuid)
-    myUsers.users.push(newUser)
     location.reload()
+  })
+  .catch((error) => {
+    alert(error.message)
   })
 })
 
@@ -77,7 +65,10 @@ signInForm.addEventListener("submit", (e) => {
 
 firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
+    console.log("User logged in!")
     // User is signed in.
+
+    //DOM THINGS
     signOut.style.display = "inline-block"
     signUp.style.display = "none"
     signIn.style.display = "none"
@@ -86,14 +77,43 @@ firebase.auth().onAuthStateChanged(function(user) {
     const str = document.createElement("strong")
     str.innerHTML = user.email
     userEmail.appendChild(str)
+    
+    //FIREBASE COLLECTION
 
-    console.log("User logged in!")
+    collectionName = "Books" + user.uid
 
-  } else {
+    db.collection(collectionName).get().then((snapshot) => {
+      snapshot.docs.forEach((doc) => {
+      const book = new Book(doc.data().title, doc.data().author, doc.data().genre, doc.data().read, doc.id);
+      myLib.addBook(book)
+      renderBook(doc)
+      })
+    })
+    
+   
+    
+  } else { 
+    //User is not signed in / is logged out
+    console.log("User signed out!")
+
+    collectionName = "Books"
+    console.log(collectionName)
+
     signUp.style.display = "inline-block"
     signIn.style.display = "inline-block"
     signOut.style.display = "none"
     userInfo.style.visibility = "hidden"
-    console.log("User signed out!")
+    
+    db.collection(collectionName).get().then((snapshot) => {
+      snapshot.docs.forEach((doc) => {
+      const book = new Book(doc.data().title, doc.data().author, doc.data().genre, doc.data().read, doc.id);
+      myLib.addBook(book)
+      renderBook(doc)
+      })
+    })
+    
+
+
   }
 });
+
