@@ -24,6 +24,11 @@
 
   </head>
   <body>
+    <nav>
+      <button class="btn btn-outline-secondary" type="button" id="sign-up">Sign Up</button>
+      <button class="btn btn-outline-secondary" type="button" id="sign-in">Sign In</button>
+      <button class="btn btn-outline-secondary" type="button" id="sign-out">Sign Out</button>
+    </nav>
     <div class="container-fluid p-relative d-inline-block" id="main">
       <div class="my-3 mx-auto align-items-center d-flex w-25 flex-wrap">
         <script>
@@ -60,6 +65,23 @@
           <button id="submit-button" type="submit" class="btn btn-secondary my-2 add-book-button">Add Book</button>
           <br>
           <button type="button" class="btn btn-info my-2" id="hide-form">Cancel</button>
+        </div>
+      </form>
+
+      <form id="sign-up-form" style="display:none;">
+        <h1>Sign Up</h1>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="text" name="email" class="form-control">
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" name="password" class="form-control">
+        </div>
+
+        <div class="form-group">
+          <button type="submit" class="btn btn-outline-secondary">Sign Up</button>
         </div>
       </form>
 

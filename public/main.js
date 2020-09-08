@@ -147,6 +147,15 @@ form.addEventListener("submit", (e) => {
   e.preventDefault(); 
   const book = new Book(form.title.value, form.author.value, form.genre.value, form.read.checked)
 
+  //hide form after submiting
+  form.style.display = "none"
+
+  //clear inputs after submitting
+  form.title.value = ""
+  form.author.value = ""
+  form.genre.value = ""
+  form.read.checked = false;
+
   //save changes to firestore
   db.collection("Books").add({
     title: book.title,
@@ -161,19 +170,12 @@ form.addEventListener("submit", (e) => {
       //console.log(docRef.data())
       //const book = myLib.library.find(el => el.id == docRef.id)
       //console.log(book)
+      location.reload()
     })
   })
   
-  //hide form after submiting
-  form.style.display = "none"
+ 
 
-  //clear inputs after submitting
-  form.title.value = ""
-  form.author.value = ""
-  form.genre.value = ""
-  form.read.checked = false;
-
-  location.reload()
 
   return false;
 
@@ -188,3 +190,4 @@ db.collection('Books').get().then((snapshot) => {
     renderBook(doc)
   })
 })
+

@@ -108,3 +108,20 @@ form {
   margin: 10px auto 0 auto;
 
 }
+
+nav {
+  align-items: center;
+  padding: 0px 20px;
+  justify-content: space-around;
+  height: 66px;
+  line-height: 66px;
+  background-color: #f9f9f9;
+}
+
+#sign-in, #sign-up, #sign-out {
+  display: none;
+}
+
+#sign-up-form {
+  display: none;
+}
