@@ -21,6 +21,9 @@
     <script src="/__/firebase/7.19.1/firebase-auth.js"></script>
     <script src="/__/firebase/init.js"></script>
 
+    <!-- fontawesome -->
+
+    <script src="https://kit.fontawesome.com/59f6efb51c.js" crossorigin="anonymous"></script>
 
   </head>
   <body>
@@ -35,9 +38,12 @@
         <button class="btn btn-secondary btn-outline-danger text-light px-4" type="button" id="sign-out">Sign Out</button>
 
       </div>
-      <div id="user-info" class="d-flex align-items-center">
+      <div id="user-info" class="d-flex align-items-center p-relative">
         <button type="button" id="login-google" class="btn btn-outline-light btn-primary">Login with Google</button>
-        <p id="user-email" style="display: none;" class="m-0">Logged in as: </p>
+        <p id="user-email" style="display: none;" class="m-0" data-toggle="collapse" data-target="#delete-account">Logged in as: </p>
+        <div id="delete-account" class="collapse">
+          <a>Delete account</a>
+        </div>
       </div>
     </nav>
     <div class="container-fluid p-relative d-inline-block" id="main">

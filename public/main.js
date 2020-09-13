@@ -26,9 +26,9 @@ function renderBook(doc) {
   bookDiv.classList.add("col-12", "col-sm-6", "col-md-4", "col-lg-3", "col-xl-2", "book");
 
   //button to delete current book from library 
-  const deleteButton = document.createElement("btn")
-  deleteButton.classList.add("delete-book-button", "btn", "btn-outline-dark")
-  deleteButton.innerHTML = "Delete Book"
+  const deleteButton = document.createElement("i")
+  deleteButton.classList.add("delete-book-button", "fas", "fa-trash");
+
 
   deleteButton.addEventListener("click", (e) => {
     if (!userLoggedIn()) {

@@ -36,6 +36,7 @@
 .book-author {
   text-align: right;
   font-weight: bold;
+  font-size: 14px;
 }
 
 .book-genre {
@@ -67,8 +68,14 @@ form {
 
 .delete-book-button {
   position: absolute;
-  left: 10px;
+  left: 20px;
   bottom: 25px;
+  font-size: 25px;
+}
+
+.delete-book-button:hover {
+  transform: rotate(25deg) scale(1.2);
+  transition: all 0.5s;
 }
 
 .read:before {
@@ -135,4 +142,18 @@ nav {
 
 #sign-in-form{
   padding: 60px 10px;
+}
+
+#delete-account {
+  position: absolute;
+  top: 40px;
+  right: 15px;
+  padding: 15px;
+  border-radius: 10px;
+  background-color: rgba(173, 216, 230, 0.288);
+
+}
+a:hover {
+  text-decoration: none;
+  cursor: pointer;
 }

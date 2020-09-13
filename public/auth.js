@@ -91,9 +91,25 @@ firebase.auth().onAuthStateChanged(function(user) {
     googleSignIn.style.display = "none"
     userEmail.style.display = "block"
 
-    const str = document.createElement("strong")
+    const str = document.createElement("a")
+    str.classList.add("font-weight-bold");
     str.innerHTML = user.email
     userEmail.appendChild(str)
+
+    const deleteAccount = document.querySelector("#delete-account");
+    deleteAccount.addEventListener("click", () => {
+      var user = firebase.auth().currentUser;
+
+      user.delete().then(function() {
+        console.log("User deleted")
+        location.reload()
+        // User deleted.
+      }).catch(function(error) {
+        console.log(error.message)
+        location.reload()
+        // An error happened.
+      });
+    })
     
     //FIREBASE COLLECTION
 
