@@ -100,7 +100,7 @@ firebase.auth().onAuthStateChanged(function(user) {
     deleteAccount.addEventListener("click", () => {
       var user = firebase.auth().currentUser;
 
-      if(confirm("Are you sure you want to delete your account? This acction cannot be undone")) {
+      if(confirm("Are you sure you want to delete your account? This action cannot be undone!")) {
         user.delete().then(function() {
           console.log("User deleted")
           location.reload()
