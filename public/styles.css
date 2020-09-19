@@ -158,11 +158,21 @@ a:hover {
   cursor: pointer;
 }
 
-#text {
-
+.form-control {
+  border: 1px solid lightgray !important;
 }
 
-#text:focus:invalid {
-  border: 1px solid red;
-  
+.form-control:focus {
+  box-shadow: none !important;
+  border: none;
 }
+
+.form-control:focus:invalid {
+  box-shadow: none;
+  border: 2px solid red !important;
+}
+.form-control:focus:valid {
+  border: 2px solid lightgreen !important;
+  box-shadow: none;
+}
+

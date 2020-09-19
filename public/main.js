@@ -15,6 +15,7 @@ const hideFormBtn = document.querySelector("#hide-form");
 const newBookBtn = document.querySelector("#new-book-button");
 const noticeDiv = document.querySelector("#notice-div")
 const notice = document.querySelector("#notice")
+const formControls = document.querySelectorAll(".form-control");
 
 
 //function to add book in the DOM
@@ -177,3 +178,8 @@ form.addEventListener("submit", (e) => {
 
 })
 
+formControls.forEach((formControl) => {
+  formControl.addEventListener("input", (e) => {
+    console.log(e.target.validity)
+  })
+})
